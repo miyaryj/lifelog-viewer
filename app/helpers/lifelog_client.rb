@@ -1,4 +1,5 @@
 require 'httpclient'
+require 'open-uri'
 
 module LifelogClient
   CLIENT_ID = ENV['LIFELOG_CLIENT_ID']
@@ -46,5 +47,15 @@ module LifelogClient
   def oauth_user
     response = session[:oauth_response]
     Hashie::Mash.new(response['user']) if response
+  end
+
+  def get_profile
+    resp = open(
+      'https://platform.lifelog.sonymobile.com/v1/users/me',
+      {
+        'Authorization' => "Bearer #{session[:oauth_response]['access_token']}"
+      }
+    )
+    ActiveSupport::JSON.decode resp.read
   end
 end

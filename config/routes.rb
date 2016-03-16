@@ -5,5 +5,6 @@ Rails.application.routes.draw do
   resources :sessions, only: [:new, :destroy]
 
   get 'sessions/callback' => 'sessions#callback'
+  get 'users/me' => 'users#me'
 
 end
